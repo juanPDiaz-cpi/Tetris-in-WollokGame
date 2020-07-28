@@ -1,9 +1,10 @@
 import wollok.game.*
-import tetris.*
+import pieces.tetris.*
 import directions.*
 import lines.*
-import straight.*
-import square.*
+import pieces.straight.*
+import pieces.square.*
+import pieces.t.*
 
 object gameConfig {
 	const property widthMin = 0
@@ -11,7 +12,7 @@ object gameConfig {
 	const property heightMin = 0
 	var property actualTime = 250
 	
-	var property tetrinomiun = new Straight()
+	var property tetrinomiun = new T()
 	
 	method start() {
 		self.keys()
@@ -32,7 +33,7 @@ object gameConfig {
 	}
 	
 	method newElement() {
-		tetrinomiun = new Straight()
+		tetrinomiun = new T()
 		self.setSettings() 
 	}
 }

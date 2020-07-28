@@ -11,12 +11,12 @@ class Straight inherits Tetrimino {
 	var property rotation = rotation0
 	
 	override method rotateLeft() {
-		if(rotation.canRotate(cube0, cube1, cube2, cube3)) {
+		//if(rotation.canRotate(cube0, cube1, cube2, cube3)) {
 			rotation = rotation.nextRotation()
 			rotation.reposition(cube0, cube1, cube2, cube3)
 			console.println("rotateLeft" + rotation.toString())
 			//basicTs.forEach({ cube => cube.rotateVertex })
-		}
+		//}
 	}
 	
 	override method rotateRight() {}

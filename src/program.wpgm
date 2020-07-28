@@ -1,4 +1,4 @@
-import tetris.*
+import pieces.tetris.*
 import wollok.game.*
 import gameConfig.*
 
