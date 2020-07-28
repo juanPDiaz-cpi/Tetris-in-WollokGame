@@ -1,0 +1,18 @@
+/*import wollok.game.*
+import tetris.*
+import gameConfig.*
+
+describe "basic tests" {
+	fixture {
+		//game.start()
+	}
+	
+	test "basic piece moving from origin position" {
+		//una abajo y dos a la izquierda.
+		basicT.moveD()
+		basicT.moveL()
+		basicT.moveL()
+				
+		assert.equals(game.at(1,2), basicT.position())		
+	}
+}*/

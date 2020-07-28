@@ -1,0 +1,15 @@
+import tetris.*
+import wollok.game.*
+import gameConfig.*
+
+program TetrisGame {
+	
+	game.cellSize(25)
+	game.height(20)
+	game.width(10)
+	
+	gameConfig.start()
+	
+	game.start()
+	
+}
