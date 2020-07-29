@@ -4,6 +4,7 @@ import gameConfig.*
 class Direction {
 	method move(element)
 	method canMove(element)
+	method thereIsBasicTStill(element)
 }
 
 object down inherits Direction {
@@ -14,8 +15,17 @@ object down inherits Direction {
 	
 	override method canMove(element) {
 		return element.height() > gameConfig.heightMin() &&
-			   game.getObjectsIn(element.position().down(1)) == []
-	}	
+			  !self.thereIsBasicTStill(element)
+	}
+	
+	override method thereIsBasicTStill(element) {
+		return game.getObjectsIn(element.position().down(1)) != [] &&
+			  !game.getObjectsIn(element.position().down(1)).head().moving()
+			   //true
+			   // se puede mover si:
+			   //	- no hay nada
+			   //	- hay algo que se mueve
+	}
 }
 
 object left inherits Direction {
@@ -26,7 +36,12 @@ object left inherits Direction {
 	
 	override method canMove(element) {
 		return element.width() > gameConfig.widthMin() &&
-			   game.getObjectsIn(element.position().left(1)) == []
+			  !self.thereIsBasicTStill(element)
+	}
+	
+	override method thereIsBasicTStill(element) {
+		return game.getObjectsIn(element.position().left(1)) != [] &&
+			  !game.getObjectsIn(element.position().left(1)).head().moving()
 	}
 }
 
@@ -38,8 +53,13 @@ object right inherits Direction {
 	
 	override method canMove(element) {
 		return element.width() < gameConfig.widthMax() &&
-			   game.getObjectsIn(element.position().right(1)) == []
-	}	
+			  !self.thereIsBasicTStill(element)
+	}
+	
+	override method thereIsBasicTStill(element) {
+		return game.getObjectsIn(element.position().right(1)) != [] &&
+			  !game.getObjectsIn(element.position().right(1)).head().moving()
+	}
 }
 
 

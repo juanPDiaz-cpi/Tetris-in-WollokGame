@@ -1,3 +1,4 @@
+import pieces.pieces.*
 import wollok.game.*
 import pieces.tetris.*
 import directions.*
@@ -12,7 +13,7 @@ object gameConfig {
 	const property heightMin = 0
 	var property actualTime = 250
 	
-	var property tetrinomiun = new T()
+	var property tetrinomiun = pieces.random()
 	
 	method start() {
 		self.keys()
@@ -33,7 +34,7 @@ object gameConfig {
 	}
 	
 	method newElement() {
-		tetrinomiun = new T()
+		tetrinomiun = pieces.random()
 		self.setSettings() 
 	}
 }

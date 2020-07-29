@@ -7,17 +7,27 @@ import dataBase.*
 
 class Tetrimino {
 	const property posibleTs = [0]
+	var property basicTs
 	
 	method rotateLeft()
 	method rotateRight()
 	method linesModified()
 	method canMove(dir)
 	method move(dir)
-	method add()
+	method notMoving()
+	
+	method add() {
+		basicTs.forEach({ basicT => basicT.add() })
+		self.autoFall()
+	}
 	
 	method wait() {
 		gameConfig.tetrinomiun(noPiece)
 		game.schedule(gameConfig.actualTime(), {})
+	}
+	
+	method cubeMain() {
+		return basicTs.find({ basicT => basicT.main() })
 	}
 	
 	method autoFall() {
@@ -36,6 +46,7 @@ class Tetrimino {
 		game.removeTickEvent("autoFall")
 		lineChecker.checkLines(self.linesModified())
 		gameConfig.newElement()
+		self.notMoving()
 	}
 	
 	method goDown() {
@@ -53,6 +64,7 @@ class Tetrimino {
 class BasicT {
 	const property main
 	var property position
+	var property moving = true
 	var property color = "Blue"
 	
 	method image() { 
@@ -74,6 +86,10 @@ class BasicT {
 	
 	method height() {
 		return position.y()
+	}
+	
+	method stopMoving() {
+		moving = false
 	}
 }
 
