@@ -3,10 +3,10 @@ import directions.*
 import tetris.*
 
 class Straight inherits Tetrimino {
-	const property cube0 = new BasicT(position = game.at(3,18), main = true)
-	const property cube1 = new BasicT(position = game.at(4,18), main = false)
-	const property cube2 = new BasicT(position = game.at(5,18), main = false)
-	const property cube3 = new BasicT(position = game.at(6,18), main = false)
+	const property cube0 = new BasicT(position = game.at(3,18), color = "Red", main = true)
+	const property cube1 = new BasicT(position = game.at(4,18), color = "Red", main = false)
+	const property cube2 = new BasicT(position = game.at(5,18), color = "Red", main = false)
+	const property cube3 = new BasicT(position = game.at(6,18), color = "Red", main = false)
 	//var property basicTs = [cube0, cube1, cube2, cube3]
 	var property rotation = rotation0
 	

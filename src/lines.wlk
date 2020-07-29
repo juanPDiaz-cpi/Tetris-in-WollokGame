@@ -4,8 +4,8 @@ import directions.*
 import dataBase.*
 
 object lineChecker {
-	const property lines = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-	const property widths = [0,1,2,3,4,5,6,7,8,9]
+	const property lines = (0..19)
+	const property widths = (0..9)
 	var property linesCleared = []
 	
 	method checkLines(linesToCheck) {

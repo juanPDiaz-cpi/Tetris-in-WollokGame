@@ -14,7 +14,6 @@ class Tetrimino {
 	method linesModified()
 	method canMove(dir)
 	method move(dir)
-	method notMoving()
 	
 	method add() {
 		basicTs.forEach({ basicT => basicT.add() })
@@ -49,6 +48,10 @@ class Tetrimino {
 		self.notMoving()
 	}
 	
+	method notMoving() {
+		basicTs.forEach({ basicT => basicT.stopMoving() })
+	}
+	
 	method goDown() {
 		if(self.canMove(down)) {
 			self.move(down)
@@ -65,7 +68,7 @@ class BasicT {
 	const property main
 	var property position
 	var property moving = true
-	var property color = "Blue"
+	var property color
 	
 	method image() { 
 		return "basicT" + color + ".png"

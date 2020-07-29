@@ -1,36 +1,38 @@
 import wollok.game.*
 import t.*
 import tetris.*
+import pieces.square.*
+import pieces.straight.*
 
 object pieces {
 	
 	method t() {
 		return 
 			new T(basicTs = [
-			new BasicT(position = game.at(4,19), main = true),
-			new BasicT(position = game.at(3,19), main = false),
-			new BasicT(position = game.at(4,18), main = false),
-			new BasicT(position = game.at(5,19), main = false)	
+			new BasicT(position = game.at(4,19), color = "Blue", main = true),
+			new BasicT(position = game.at(3,19), color = "Blue", main = false),
+			new BasicT(position = game.at(4,18), color = "Blue", main = false),
+			new BasicT(position = game.at(5,19), color = "Blue", main = false)	
 		])
 	}
 	
 	method square() {
 		return 
-			new T(basicTs = [
-			new BasicT(position = game.at(4,18), main = true),
-			new BasicT(position = game.at(5,18), main = false),
-			new BasicT(position = game.at(4,19), main = false),
-			new BasicT(position = game.at(5,19), main = false)	
+			new Cube(basicTs = [
+			new BasicT(position = game.at(4,18), color = "Yellow", main = true),
+			new BasicT(position = game.at(5,18), color = "Yellow", main = false),
+			new BasicT(position = game.at(4,19), color = "Yellow", main = false),
+			new BasicT(position = game.at(5,19), color = "Yellow", main = false)	
 		])
 	}
 	
 	method straight() {
 		return 
-			new T(basicTs = [
-			new BasicT(position = game.at(3,18), main = true),
-			new BasicT(position = game.at(4,18), main = false),
-			new BasicT(position = game.at(5,18), main = false),
-			new BasicT(position = game.at(6,18), main = false)	
+			new Straight(basicTs = [
+			new BasicT(position = game.at(3,18), color = "Red", main = true),
+			new BasicT(position = game.at(4,18), color = "Red", main = false),
+			new BasicT(position = game.at(5,18), color = "Red", main = false),
+			new BasicT(position = game.at(6,18), color = "Red", main = false)	
 		])
 	}
 	

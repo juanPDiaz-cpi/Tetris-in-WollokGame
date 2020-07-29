@@ -3,11 +3,6 @@ import directions.*
 import tetris.*
 
 class Cube inherits Tetrimino {
-	const property cube0 = new BasicT(position = game.at(4,18), main = true)
-	const property cube1 = new BasicT(position = game.at(5,18), main = false)
-	const property cube2 = new BasicT(position = game.at(4,19), main = false)
-	const property cube3 = new BasicT(position = game.at(5,19), main = false)
-	//var property basicTs = [cube0, cube1, cube2, cube3]
 	
 	override method rotateLeft() {}
 	override method rotateRight() {}
