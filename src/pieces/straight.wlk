@@ -1,21 +1,20 @@
 import wollok.game.*
 import directions.*
 import tetris.*
+import gameConfig.*
 
 class Straight inherits Tetrimino {
-	const property cube0 = new BasicT(position = game.at(3,18), color = "Red", main = true)
-	const property cube1 = new BasicT(position = game.at(4,18), color = "Red", main = false)
-	const property cube2 = new BasicT(position = game.at(5,18), color = "Red", main = false)
-	const property cube3 = new BasicT(position = game.at(6,18), color = "Red", main = false)
-	//var property basicTs = [cube0, cube1, cube2, cube3]
+	/*var property cube0 = basicTs.get(0)
+	var property cube1 = basicTs.get(1)
+	var property cube2 = basicTs.get(2)
+	var property cube3 = basicTs.get(3)*/
 	var property rotation = rotation0
 	
 	override method rotateLeft() {
 		//if(rotation.canRotate(cube0, cube1, cube2, cube3)) {
 			rotation = rotation.nextRotation()
-			rotation.reposition(cube0, cube1, cube2, cube3)
+			rotation.reposition(basicTs)
 			console.println("rotateLeft" + rotation.toString())
-			//basicTs.forEach({ cube => cube.rotateVertex })
 		//}
 	}
 	
@@ -25,10 +24,6 @@ class Straight inherits Tetrimino {
 		if(self.canMove(dir)) {
 			basicTs.forEach({ basicT => basicT.move(dir) })
 		}
-	}
-	
-	override method canMove(dir) {
-		return rotation.canMove(dir, cube0, cube1, cube2, cube3)
 	}
 	
 	override method add() {
@@ -42,35 +37,18 @@ class Straight inherits Tetrimino {
 }
 
 class Rotation {
-	method allCanMove(dir, cube0, cube1, cube2, cube3) {
-		return dir.canMove(cube0) &&
-			   dir.canMove(cube1) &&
-			   dir.canMove(cube2) &&
-			   dir.canMove(cube3)
-	}
-	
-	method canRotate(cube0, cube1, cube2, cube3) {
-		return true
-	}
+	method reposition(basicTs)
+	method nextRotation()
 }
 
 object rotation0 inherits Rotation {
-	method canMove(dir, cube0, cube1, cube2, cube3) {
-		if(dir == right) {
-			return right.canMove(cube3)
-		} else if(dir == left) {
-			return left.canMove(cube0)
-		} else {
-			return self.allCanMove(down, cube0, cube1, cube2, cube3)
-		}
-	}
 	
-	method nextRotation() {
-		return rotation1
-	}
-	
-	method reposition(cube0, cube1, cube2, cube3) {
-		console.println(cube0.height().toString())
+	override method reposition(basicTs) {
+		const cube0 = basicTs.get(0)
+		const cube1 = basicTs.get(1)
+		const cube2 = basicTs.get(2)
+		const cube3 = basicTs.get(3)
+		
 		cube3.position(cube3.position().up(2))
 		cube3.position(cube3.position().right(1))
 		
@@ -81,20 +59,20 @@ object rotation0 inherits Rotation {
 		cube0.position(cube0.position().left(2))
 		cube0.position(cube0.position().down(1))
 	}
+	
+	override method nextRotation() {
+		return rotation1
+	}
 }
 
 object rotation1 inherits Rotation {
-	method canMove(dir, cube0, cube1, cube2, cube3) {
-		if(dir == right) {
-			return self.allCanMove(dir, cube0, cube1, cube2, cube3)
-		} else if(dir == left) {
-			return self.allCanMove(dir, cube0, cube1, cube2, cube3)
-		} else {
-			return down.canMove(cube0)
-		}
-	}
 	
-	method reposition(cube0, cube1, cube2, cube3) {
+	override method reposition(basicTs) {
+		const cube0 = basicTs.get(0)
+		const cube1 = basicTs.get(1)
+		const cube2 = basicTs.get(2)
+		const cube3 = basicTs.get(3)
+		
 		console.println(cube0.height().toString())
 		cube3.position(cube3.position().left(2))
 		cube3.position(cube3.position().up(1))
@@ -107,27 +85,19 @@ object rotation1 inherits Rotation {
 		cube0.position(cube0.position().right(1))
 	}
 
-	method nextRotation() {
+	override method nextRotation() {
 		return rotation2
 	}
 }
 
 object rotation2 inherits Rotation {
-	method canMove(dir, cube0, cube1, cube2, cube3) {
-		if(dir == right) {
-			return right.canMove(cube0)
-		} else if(dir == left) {
-			return left.canMove(cube3)
-		} else {
-			return self.allCanMove(down, cube0, cube1, cube2, cube3)
-		}
-	}
 	
-	method nextRotation() {
-		return rotation3
-	}
-	
-	method reposition(cube0, cube1, cube2, cube3) {
+	override method reposition(basicTs) {
+		const cube0 = basicTs.get(0)
+		const cube1 = basicTs.get(1)
+		const cube2 = basicTs.get(2)
+		const cube3 = basicTs.get(3)
+		
 		console.println(cube0.height().toString())
 		cube3.position(cube3.position().down(2))
 		cube3.position(cube3.position().left(1))
@@ -139,24 +109,20 @@ object rotation2 inherits Rotation {
 		cube0.position(cube0.position().right(2))
 		cube0.position(cube0.position().up(1))
 	}
+	
+	override method nextRotation() {
+		return rotation3
+	}
 }
 
 object rotation3 inherits Rotation {
-	method canMove(dir, cube0, cube1, cube2, cube3) {
-		if(dir == right) {
-			return self.allCanMove(dir, cube0, cube1, cube2, cube3)
-		} else if(dir == left) {
-			return self.allCanMove(dir, cube0, cube1, cube2, cube3)
-		} else {
-			return down.canMove(cube3)
-		}
-	}
 	
-	method nextRotation() {
-		return rotation0
-	}
-	
-	method reposition(cube0, cube1, cube2, cube3) {
+	override method reposition(basicTs) {
+		const cube0 = basicTs.get(0)
+		const cube1 = basicTs.get(1)
+		const cube2 = basicTs.get(2)
+		const cube3 = basicTs.get(3)
+		
 		console.println(cube0.height().toString())
 		cube3.position(cube3.position().down(1))
 		cube3.position(cube3.position().right(2))
@@ -167,6 +133,10 @@ object rotation3 inherits Rotation {
 		
 		cube0.position(cube0.position().up(2))
 		cube0.position(cube0.position().left(1))
+	}
+	
+	override method nextRotation() {
+		return rotation0
 	}
 }
 

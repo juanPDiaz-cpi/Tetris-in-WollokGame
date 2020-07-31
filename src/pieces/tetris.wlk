@@ -6,14 +6,18 @@ import dataBase.*
 
 
 class Tetrimino {
-	const property posibleTs = [0]
 	var property basicTs
 	
-	method rotateLeft()
-	method rotateRight()
-	method linesModified()
-	method canMove(dir)
-	method move(dir)
+	method rotateRight() {}
+	
+	method rotateLeft() {
+		basicTs.forEach({ basicT =>
+			basicT.position(game.at
+				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
+				 self.cubeMain().height() - self.cubeMain().width() + basicT.width())
+			)		
+		})
+	}
 	
 	method add() {
 		basicTs.forEach({ basicT => basicT.add() })
@@ -61,11 +65,24 @@ class Tetrimino {
 		}
 	}
 	
-		
+	method canMove(dir) {
+		return basicTs.all({ basicT => dir.canMove(basicT) })
+	}
+	
+	method move(dir) {
+		if(self.canMove(dir)) {
+			basicTs.forEach({ basicT => basicT.move(dir) })
+		}
+	}
+
+	method linesModified() {
+		return basicTs.map({ basicT => basicT.height() }).asSet()
+	}
 }
 
 class BasicT {
 	const property main
+	const property centerId = null
 	var property position
 	var property moving = true
 	var property color
@@ -94,6 +111,18 @@ class BasicT {
 	method stopMoving() {
 		moving = false
 	}
+}
+
+class GhostT {
+	var property position
+	const property centerId
+	
+	method add() {}
+	method width() { return position.x() }
+	method height() { return position.y() }
+	method move(dir) { dir.move(self) }
+	method stopMoving() {}
+	
 }
 
 object noPiece {	

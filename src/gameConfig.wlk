@@ -5,13 +5,12 @@ import directions.*
 import lines.*
 import pieces.straight.*
 import pieces.square.*
-import pieces.t.*
 
 object gameConfig {
 	const property widthMin = 0
 	const property widthMax = 9
 	const property heightMin = 0
-	var property actualTime = 250
+	var property actualTime = 50
 	
 	var property tetrinomiun = pieces.random()
 	
