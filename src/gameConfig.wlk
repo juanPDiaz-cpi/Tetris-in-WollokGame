@@ -10,7 +10,7 @@ object gameConfig {
 	const property widthMin = 0
 	const property widthMax = 9
 	const property heightMin = 0
-	var property actualTime = 50
+	var property actualTime = 250
 	
 	var property tetrinomiun = pieces.random()
 	
@@ -25,6 +25,7 @@ object gameConfig {
 		keyboard.down().onPressDo({ tetrinomiun.move(down) })
 		keyboard.space().onPressDo({ tetrinomiun.goDown() })
 		keyboard.z().onPressDo({ tetrinomiun.rotateLeft() })
+		keyboard.x().onPressDo({ tetrinomiun.rotateRight() })
 	}
 	
 	method setSettings() {

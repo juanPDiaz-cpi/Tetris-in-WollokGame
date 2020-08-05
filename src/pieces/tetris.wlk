@@ -8,15 +8,41 @@ import dataBase.*
 class Tetrimino {
 	var property basicTs
 	
-	method rotateRight() {}
-	
-	method rotateLeft() {
+	method rotateRight() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
-				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
-				 self.cubeMain().height() - self.cubeMain().width() + basicT.width())
+			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),	  // Implementación del algoritmo de rotación.
+				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
+			    //(basicT.nextXPos(self.cubeMain()),
+				//basicT.nextYPos(self.cubeMain()))
 			)		
 		})
+	}
+	
+	method rotateLeft() {
+		if(self.canRotateL()) {
+			basicTs.forEach({ basicT =>
+				basicT.position(game.at
+					(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
+					self.cubeMain().height() - self.cubeMain().width() + basicT.width())
+				     //(basicT.nextXPos(self.cubeMain()),
+					//basicT.nextYPos(self.cubeMain()))
+				)		
+			})
+		}
+	}
+	
+	method canRotateL() {
+		return basicTs.all({ basicT =>
+			self.nothingOn(game.at(basicT.nextXPos(self.cubeMain()), basicT.nextYPos(self.cubeMain()))) &&
+			basicT.nextXPos(self.cubeMain()) >= gameConfig.widthMin() &&
+			basicT.nextXPos(self.cubeMain()) <= gameConfig.widthMax() &&
+			basicT.nextYPos(self.cubeMain()) >= gameConfig.heightMin()
+		})
+	}
+	
+	method nothingOn(pos) {
+		return game.getObjectsIn(pos) == []
 	}
 	
 	method add() {
@@ -111,18 +137,17 @@ class BasicT {
 	method stopMoving() {
 		moving = false
 	}
-}
-
-class GhostT {
-	var property position
-	const property centerId
 	
-	method add() {}
-	method width() { return position.x() }
-	method height() { return position.y() }
-	method move(dir) { dir.move(self) }
-	method stopMoving() {}
+	method nextXPos(centerT) {
+		return centerT.height() + centerT.width() - self.height()
+	}
 	
+	//(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
+	// self.cubeMain().height() - self.cubeMain().width() + basicT.width())
+	
+	method nextYPos(centerT) {
+		return centerT.height() - centerT.width() + self.height()
+	}
 }
 
 object noPiece {	
