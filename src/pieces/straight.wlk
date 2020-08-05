@@ -14,11 +14,14 @@ class Straight inherits Tetrimino {
 		//if(rotation.canRotate(cube0, cube1, cube2, cube3)) {
 			rotation = rotation.nextRotation()
 			rotation.reposition(basicTs)
-			console.println("rotateLeft" + rotation.toString())
+			//console.println("rotateLeft" + rotation.toString())
 		//}
 	}
 	
-	override method rotateRight() {}
+	override method rotateRight() {
+		rotation = rotation.prevRotation()
+		rotation.reposition(basicTs)
+	}
 	
 	override method move(dir) {
 		if(self.canMove(dir)) {
@@ -39,6 +42,7 @@ class Straight inherits Tetrimino {
 class Rotation {
 	method reposition(basicTs)
 	method nextRotation()
+	method prevRotation()
 }
 
 object rotation0 inherits Rotation {
@@ -62,6 +66,10 @@ object rotation0 inherits Rotation {
 	
 	override method nextRotation() {
 		return rotation1
+	}
+
+	override method prevRotation() {
+		return rotation3
 	}
 }
 
@@ -88,6 +96,10 @@ object rotation1 inherits Rotation {
 	override method nextRotation() {
 		return rotation2
 	}
+
+	override method prevRotation() {
+		return rotation0
+	}
 }
 
 object rotation2 inherits Rotation {
@@ -113,6 +125,10 @@ object rotation2 inherits Rotation {
 	override method nextRotation() {
 		return rotation3
 	}
+
+	override method prevRotation() {
+		return rotation1
+	}
 }
 
 object rotation3 inherits Rotation {
@@ -137,6 +153,10 @@ object rotation3 inherits Rotation {
 	
 	override method nextRotation() {
 		return rotation0
+	}
+
+	override method prevRotation() {
+		return rotation2
 	}
 }
 

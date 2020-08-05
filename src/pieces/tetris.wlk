@@ -8,36 +8,70 @@ import dataBase.*
 class Tetrimino {
 	var property basicTs
 	
+	method rotateLeft() {
+		self.rotateLeftS()
+		if(self.overlap()) {
+			self.executeTests(left)
+		}
+	}
+	
 	method rotateRight() {
+		self.rotateRightS()
+		if(self.overlap()) {
+			self.executeTests(right)
+		}
+	}
+	
+	method overlap() {
+		return basicTs.any({ basicT =>
+			self.overlaped(basicT)
+		})
+	}
+	
+	method overlaped(basicT) {
+		return game.colliders(basicT) != []
+	}
+	
+	method executeTests(dir) {
+		if(self.canMove(right)) {
+			self.testMove(right)
+		} else if(self.canMove(up)) {
+			self.testMove(up)
+		} else if(self.canMove(left)) {
+			self.testMove(left)
+		} else if(self.canMove(down)) {
+			self.testMove(down)
+		} else {
+			dir.rotate(self)
+		}
+	}
+	
+	method testMove(dir) {
+		basicTs.forEach({ b => dir.move(b) })
+		self.checkOverlap(dir.opposite())
+	}
+	
+	method checkOverlap(dir) {
+		if(self.overlap()) {
+			basicTs.forEach({ b => dir.move(b) })
+		}
+	}
+	
+	method rotateRightS() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
-			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),	  // Implementación del algoritmo de rotación.
-				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
-			    //(basicT.nextXPos(self.cubeMain()),
-				//basicT.nextYPos(self.cubeMain()))
+				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),
+				self.cubeMain().height() - self.cubeMain().width() + basicT.width())
 			)		
 		})
 	}
 	
-	method rotateLeft() {
-		if(self.canRotateL()) {
-			basicTs.forEach({ basicT =>
-				basicT.position(game.at
-					(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
-					self.cubeMain().height() - self.cubeMain().width() + basicT.width())
-				     //(basicT.nextXPos(self.cubeMain()),
-					//basicT.nextYPos(self.cubeMain()))
-				)		
-			})
-		}
-	}
-	
-	method canRotateL() {
-		return basicTs.all({ basicT =>
-			self.nothingOn(game.at(basicT.nextXPos(self.cubeMain()), basicT.nextYPos(self.cubeMain()))) &&
-			basicT.nextXPos(self.cubeMain()) >= gameConfig.widthMin() &&
-			basicT.nextXPos(self.cubeMain()) <= gameConfig.widthMax() &&
-			basicT.nextYPos(self.cubeMain()) >= gameConfig.heightMin()
+	method rotateLeftS() {
+		basicTs.forEach({ basicT =>
+			basicT.position(game.at
+			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),
+				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
+			)		
 		})
 	}
 	
@@ -66,8 +100,6 @@ class Tetrimino {
 			} else {
 				self.endAutoFall()
 			}
-			//console.println("running?")
-			//console.println("Width: " + width.toString())
 		})
 	}
 	
@@ -92,7 +124,8 @@ class Tetrimino {
 	}
 	
 	method canMove(dir) {
-		return basicTs.all({ basicT => dir.canMove(basicT) })
+		return basicTs.all({ basicT => dir.canMove(basicT) }) 
+		//&& basicT.inLimits() })
 	}
 	
 	method move(dir) {
@@ -110,7 +143,7 @@ class BasicT {
 	const property main
 	const property centerId = null
 	var property position
-	var property moving = true
+	var property moving
 	var property color
 	
 	method image() { 

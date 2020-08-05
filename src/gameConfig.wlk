@@ -7,15 +7,28 @@ import pieces.straight.*
 import pieces.square.*
 
 object gameConfig {
-	const property widthMin = 0
-	const property widthMax = 9
-	const property heightMin = 0
+	const property widthMin = -1
+	const property widthMax = 10
+	const property heightMin = -1
+	const property heightMax = 20
 	var property actualTime = 250
 	
 	var property tetrinomiun = pieces.random()
+
+	method setBoard() {
+		(widthMin..widthMax).forEach({ n => game.addVisual(self.basicT(n, heightMin)) })
+		(widthMin..widthMax).forEach({ n => game.addVisual(self.basicT(n, heightMax)) })
+		((heightMin-1)..(heightMax-1)).forEach({ n => game.addVisual(self.basicT(widthMin, n)) })
+		((heightMin-1)..(heightMax-1)).forEach({ n => game.addVisual(self.basicT(widthMax, n)) })
+	}
+
+	method basicT(x, y) {
+		return new BasicT(main = false, position = game.at(x,y), color = "Blue", moving = false)
+	}
 	
 	method start() {
 		self.keys()
+		self.setBoard()
 		self.setSettings()
 	}
 	
@@ -29,7 +42,7 @@ object gameConfig {
 	}
 	
 	method setSettings() {
-		console.println("running?")
+		//console.println("running?")
 		tetrinomiun.add()
 	}
 	
