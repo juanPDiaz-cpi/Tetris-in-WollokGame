@@ -51,8 +51,18 @@ object pieces {
 			])
 	}
 	
+	method s() {
+		return
+			new Tetrimino(basicTs = [
+				new BasicT(position = game.at(4,19), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(5,19), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(3,18), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(4,18), color = "Blue", main = true, moving = true)
+			])
+	}
+	
 	method random() {
-		return self.straight() //[self.square(), self.straight(), self.t()].anyOne()
+		return self.t() //[self.square(), self.straight(), self.t()].anyOne()
 	}
 }
 

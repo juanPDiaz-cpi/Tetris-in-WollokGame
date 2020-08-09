@@ -11,14 +11,49 @@ class Tetrimino {
 	method rotateLeft() {
 		self.rotateLeftS()
 		if(self.overlap()) {
-			self.executeTests(left)
+			self.findNewPosition(left)
 		}
+	}
+	
+	method findNewPosition(dir) {
+		self.moveTo(self.findPosition(self.possiblePositions(dir), dir))
+	}
+	
+	method possiblePositions(dir) {
+		const possPos = []
+		
+		if(dir == left) {
+			self.addPositions()
+		} else {
+			
+		}
+		
+		return possPos
+	}
+	
+	method moveTo(pos) {
+		const diffX = self.cubeMain().diffX(pos)
+		const diffY = self.cubeMain().diffY(pos)
+		basicTs.forEach({ b =>
+			b.position(game.at(
+				b.position().x() - diffX,
+				b.position().y() - diffY
+			))
+		})
+	}
+	
+	method findPosition(possPos, dir) {
+		return possPos.findOrElse({ pos => self.canBeAt(pos) }, { dir.opposite().rotate(self) })
+	}
+	
+	method canBeAt(pos) {
+		return basicTs.all({ b => b.canBeAt(pos) })
 	}
 	
 	method rotateRight() {
 		self.rotateRightS()
 		if(self.overlap()) {
-			self.executeTests(right)
+			// self.executeTests(right)
 		}
 	}
 	
@@ -32,21 +67,12 @@ class Tetrimino {
 		return game.colliders(basicT) != []
 	}
 	
-	method executeTests(dir) {
-		if(self.canMove(right)) {
-			self.testMove(right)
-		} else if(self.canMove(up)) {
-			self.testMove(up)
-		} else if(self.canMove(left)) {
-			self.testMove(left)
-		} else if(self.canMove(down)) {
-			self.testMove(down)
-		} else {
-			dir.rotate(self)
-		}
+	method testMove(dir) {
+		basicTs.forEach({ b => dir.move(b) })
+		self.checkOverlap(dir.opposite())
 	}
 	
-	method testMove(dir) {
+	method testMove(n, dir) {
 		basicTs.forEach({ b => dir.move(b) })
 		self.checkOverlap(dir.opposite())
 	}
@@ -71,7 +97,7 @@ class Tetrimino {
 			basicT.position(game.at
 			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),
 				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
-			)		
+			)
 		})
 	}
 	
@@ -125,7 +151,10 @@ class Tetrimino {
 	
 	method canMove(dir) {
 		return basicTs.all({ basicT => dir.canMove(basicT) }) 
-		//&& basicT.inLimits() })
+	}
+	
+	method canMove(n, dir) {
+		return basicTs.all({ basicT => dir.nothingOn(basicT.position(), n) }) 
 	}
 	
 	method move(dir) {
@@ -171,15 +200,30 @@ class BasicT {
 		moving = false
 	}
 	
-	method nextXPos(centerT) {
-		return centerT.height() + centerT.width() - self.height()
-	}
-	
 	//(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
 	// self.cubeMain().height() - self.cubeMain().width() + basicT.width())
 	
 	method nextYPos(centerT) {
 		return centerT.height() - centerT.width() + self.height()
+	}
+	
+	method diffX(pos) {
+		return self.width() - pos.x()
+	}
+	
+	method diffY(pos) {
+		return self.height() - pos.y()
+	}
+	
+	method canBeAt(pos) {
+		return self.nothingOn(game.at(
+			(position.x() - self.diffX(pos)),
+			(position.y() - self.diffY(pos))
+		))
+	}
+	
+	method nothingOn(pos) {
+		return game.getObjectsIn(pos) == []
 	}
 }
 
@@ -189,4 +233,5 @@ object noPiece {
 	method rotateLeft() {}
 	method rotateRight() {}
 	method add() {}
+	method endAutoFall() {}
 }

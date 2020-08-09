@@ -5,6 +5,7 @@ import directions.*
 import lines.*
 import pieces.straight.*
 import pieces.square.*
+import dataBase.*
 
 object gameConfig {
 	const property widthMin = -1
@@ -39,6 +40,8 @@ object gameConfig {
 		keyboard.space().onPressDo({ tetrinomiun.goDown() })
 		keyboard.z().onPressDo({ tetrinomiun.rotateLeft() })
 		keyboard.x().onPressDo({ tetrinomiun.rotateRight() })
+		keyboard.r().onPressDo({ self.restartGame() })
+		keyboard.control().onPressDo({ game.stop() })
 	}
 	
 	method setSettings() {
@@ -48,6 +51,12 @@ object gameConfig {
 	
 	method newElement() {
 		tetrinomiun = pieces.random()
-		self.setSettings() 
+		self.setSettings()
+	}
+	
+	method restartGame() {
+		dataBase.clearGame()
+		tetrinomiun.endAutoFall()
+		//self.setSettings()
 	}
 }
