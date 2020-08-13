@@ -4,13 +4,9 @@ import tetris.*
 import gameConfig.*
 
 class Straight inherits Tetrimino {
-	/*var property cube0 = basicTs.get(0)
-	var property cube1 = basicTs.get(1)
-	var property cube2 = basicTs.get(2)
-	var property cube3 = basicTs.get(3)*/
-	var property rotation = rotation0
+	//var property rotation = rotation0
 	
-	override method rotateLeft() {
+	override method rotateCW() {
 		//if(rotation.canRotate(cube0, cube1, cube2, cube3)) {
 			rotation = rotation.nextRotation()
 			rotation.reposition(basicTs)
@@ -18,7 +14,7 @@ class Straight inherits Tetrimino {
 		//}
 	}
 	
-	override method rotateRight() {
+	override method rotateACW() {
 		rotation = rotation.prevRotation()
 		rotation.reposition(basicTs)
 	}

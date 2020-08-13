@@ -11,10 +11,7 @@ object pieces {
 				new BasicT(position = game.at(4,19), color = "Blue", main = true, moving = true),
 				new BasicT(position = game.at(3,19), color = "Blue", main = false, moving = true),
 				new BasicT(position = game.at(4,18), color = "Blue", main = false, moving = true),
-				new BasicT(position = game.at(5,19), color = "Blue", main = false, moving = true)
-				//new BasicT(position = game.at(6,19), color = "Blue", main = false),
-				//new BasicT(position = game.at(5,20), color = "Blue", main = false),
-				//new BasicT(position = game.at(3,20), color = "Blue", main = false)	
+				new BasicT(position = game.at(5,19), color = "Blue", main = false, moving = true)	
 			])
 	}
 	
@@ -25,9 +22,6 @@ object pieces {
 				new BasicT(position = game.at(4,19), color = "Blue", main = true, moving = true),
 				new BasicT(position = game.at(5,19), color = "Blue", main = false, moving = true),
 				new BasicT(position = game.at(6,19), color = "Blue", main = false, moving = true)
-				//new BasicT(position = game.at(6,19), color = "Blue", main = false),
-				//new BasicT(position = game.at(5,20), color = "Blue", main = false),
-				//new BasicT(position = game.at(3,20), color = "Blue", main = false)	
 			])
 	}
 	
@@ -61,8 +55,38 @@ object pieces {
 			])
 	}
 	
+	method z() {
+		return
+			new Tetrimino(basicTs = [
+				new BasicT(position = game.at(3,19), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(4,19), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(4,18), color = "Blue", main = true, moving = true),
+				new BasicT(position = game.at(5,18), color = "Blue", main = false, moving = true)
+			])
+	}
+	
+	method l() {
+		return
+			new Tetrimino(basicTs = [
+				new BasicT(position = game.at(3,18), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(4,18), color = "Blue", main = true, moving = true),
+				new BasicT(position = game.at(5,18), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(5,19), color = "Blue", main = false, moving = true)
+			])
+	}
+	
+	method j() {
+		return
+			new Tetrimino(basicTs = [
+				new BasicT(position = game.at(3,19), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(3,18), color = "Blue", main = false, moving = true),
+				new BasicT(position = game.at(4,18), color = "Blue", main = true, moving = true),
+				new BasicT(position = game.at(5,18), color = "Blue", main = false, moving = true)
+			])
+	}
+	
 	method random() {
-		return self.t() //[self.square(), self.straight(), self.t()].anyOne()
+		return [self.square(), self.t(), self.l(), self.j(), self.s(), self.z()].anyOne()
 	}
 }
 

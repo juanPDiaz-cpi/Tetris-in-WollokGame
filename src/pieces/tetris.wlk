@@ -1,4 +1,5 @@
 import wollok.game.*
+import rotationsys.*
 import gameConfig.*
 import directions.*
 import lines.*
@@ -6,103 +7,45 @@ import dataBase.*
 
 
 class Tetrimino {
+	var property rotation = 0
 	var property basicTs
 	
-	method rotateLeft() {
-		self.rotateLeftS()
-		if(self.overlap()) {
-			self.findNewPosition(left)
-		}
+	method rotateCW() {
+		self.rotateCWS()
+		rotationSys.executeRotationTestsCW(self)
 	}
 	
-	method findNewPosition(dir) {
-		self.moveTo(self.findPosition(self.possiblePositions(dir), dir))
+	method rotateACW() {
+		self.rotateACWS()
+		rotationSys.executeRotationTestsACW(self)
 	}
 	
-	method possiblePositions(dir) {
-		const possPos = []
-		
-		if(dir == left) {
-			self.addPositions()
-		} else {
-			
-		}
-		
-		return possPos
-	}
-	
-	method moveTo(pos) {
-		const diffX = self.cubeMain().diffX(pos)
-		const diffY = self.cubeMain().diffY(pos)
-		basicTs.forEach({ b =>
-			b.position(game.at(
-				b.position().x() - diffX,
-				b.position().y() - diffY
-			))
-		})
-	}
-	
-	method findPosition(possPos, dir) {
-		return possPos.findOrElse({ pos => self.canBeAt(pos) }, { dir.opposite().rotate(self) })
-	}
-	
-	method canBeAt(pos) {
-		return basicTs.all({ b => b.canBeAt(pos) })
-	}
-	
-	method rotateRight() {
-		self.rotateRightS()
-		if(self.overlap()) {
-			// self.executeTests(right)
-		}
-	}
-	
-	method overlap() {
-		return basicTs.any({ basicT =>
-			self.overlaped(basicT)
-		})
-	}
-	
-	method overlaped(basicT) {
-		return game.colliders(basicT) != []
-	}
-	
-	method testMove(dir) {
-		basicTs.forEach({ b => dir.move(b) })
-		self.checkOverlap(dir.opposite())
-	}
-	
-	method testMove(n, dir) {
-		basicTs.forEach({ b => dir.move(b) })
-		self.checkOverlap(dir.opposite())
-	}
-	
-	method checkOverlap(dir) {
-		if(self.overlap()) {
-			basicTs.forEach({ b => dir.move(b) })
-		}
-	}
-	
-	method rotateRightS() {
+	method rotateCWS() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
 				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),
 				self.cubeMain().height() - self.cubeMain().width() + basicT.width())
 			)		
 		})
+		self.decreaseRotation()
 	}
 	
-	method rotateLeftS() {
+	method increaseRotation() {
+		rotation = (rotation + 1)%(4)
+	}
+	
+	method decreaseRotation() {
+		rotation = (rotation + 3)%(4)
+	}
+	
+	method rotateACWS() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
 			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),
 				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
-			)
+			)		
 		})
-	}
-	
-	method nothingOn(pos) {
-		return game.getObjectsIn(pos) == []
+		self.increaseRotation()
 	}
 	
 	method add() {
@@ -149,12 +92,16 @@ class Tetrimino {
 		}
 	}
 	
-	method canMove(dir) {
-		return basicTs.all({ basicT => dir.canMove(basicT) }) 
+	method canBeAt(pos) {
+		return basicTs.all({ b => b.canBeAt(pos.x(), pos.y()) })
 	}
 	
-	method canMove(n, dir) {
-		return basicTs.all({ basicT => dir.nothingOn(basicT.position(), n) }) 
+	method moveTo(pos) {
+		basicTs.forEach({ b => b.moveTo(pos.x(), pos.y()) })
+	}
+	
+	method canMove(dir) {
+		return basicTs.all({ basicT => dir.canMove(basicT) }) 
 	}
 	
 	method move(dir) {
@@ -207,23 +154,30 @@ class BasicT {
 		return centerT.height() - centerT.width() + self.height()
 	}
 	
-	method diffX(pos) {
-		return self.width() - pos.x()
-	}
-	
-	method diffY(pos) {
-		return self.height() - pos.y()
-	}
-	
-	method canBeAt(pos) {
-		return self.nothingOn(game.at(
-			(position.x() - self.diffX(pos)),
-			(position.y() - self.diffY(pos))
-		))
+	method canBeAt(valueX, valueY) {
+		
+		return !self.stillOn(game.at(
+			(position.x() + valueX),
+			(position.y() + valueY)
+		)) || self.nothingOn(game.at(
+			(position.x() + valueX),
+			(position.y() + valueY)))
 	}
 	
 	method nothingOn(pos) {
 		return game.getObjectsIn(pos) == []
+	}
+	
+	method moveTo(valueX, valueY) {
+		position = game.at(
+			(position.x() + valueX),
+			(position.y() + valueY)
+		)
+	}
+	
+	method stillOn(pos) {
+		return game.getObjectsIn(pos) != [] &&
+			  !game.getObjectsIn(pos).head().moving()
 	}
 }
 
