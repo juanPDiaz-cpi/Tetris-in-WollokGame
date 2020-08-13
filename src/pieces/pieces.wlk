@@ -10,7 +10,7 @@ object pieces {
 			new Tetrimino(basicTs = [
 				new BasicT(position = game.at(4,19), color = "Pink", main = true, moving = true),
 				new BasicT(position = game.at(3,19), color = "Pink", main = false, moving = true),
-				new BasicT(position = game.at(4,18), color = "Pink", main = false, moving = true),
+				new BasicT(position = game.at(4,20), color = "Pink", main = false, moving = true),
 				new BasicT(position = game.at(5,19), color = "Pink", main = false, moving = true)	
 			])
 	}

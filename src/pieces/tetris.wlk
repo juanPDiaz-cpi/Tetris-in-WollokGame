@@ -20,32 +20,37 @@ class Tetrimino {
 		rotationSys.executeRotationTestsACW(self)
 	}
 	
+	
 	method rotateCWS() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
-				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),
-				self.cubeMain().height() - self.cubeMain().width() + basicT.width())
-			)		
+			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),
+				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
+			)
 		})
-		self.decreaseRotation()
-	}
-	
-	method increaseRotation() {
-		rotation = (rotation + 1)%(4)
-	}
-	
-	method decreaseRotation() {
-		rotation = (rotation + 3)%(4)
+		self.increaseRotation()
 	}
 	
 	method rotateACWS() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
-			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),
-				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
-			)		
+				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),
+				self.cubeMain().height() - self.cubeMain().width() + basicT.width())
+			)
 		})
-		self.increaseRotation()
+		self.decreaseRotation()
+	}
+	
+	method increaseRotation() {
+		console.println(rotation)
+		rotation = (rotation + 1)%(4)
+		console.println("Done: new rotation is " + rotation.toString())
+	}
+	
+	method decreaseRotation() {
+		console.println(rotation)
+		rotation = (rotation + 3)%(4)
+		console.println("Done: new rotation is " + rotation.toString())
 	}
 	
 	method add() {

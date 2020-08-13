@@ -38,10 +38,10 @@ object gameConfig {
 		keyboard.right().onPressDo({ tetrinomiun.move(right) })
 		keyboard.down().onPressDo({ tetrinomiun.move(down) })
 		keyboard.space().onPressDo({ tetrinomiun.goDown() })
-		keyboard.z().onPressDo({ tetrinomiun.rotateCW() })
-		keyboard.x().onPressDo({ tetrinomiun.rotateACW() })
+		keyboard.z().onPressDo({ tetrinomiun.rotateACW() })
+		keyboard.x().onPressDo({ tetrinomiun.rotateCW() })
 		keyboard.r().onPressDo({ self.restartGame() })
-		keyboard.control().onPressDo({ game.stop() })
+		keyboard.backspace().onPressDo({ game.stop() })
 		keyboard.n().onPressDo({ console.println(tetrinomiun.rotation().toString()) })
 	}
 	
