@@ -1,4 +1,5 @@
 import wollok.game.*
+import rotationsys.*
 import gameConfig.*
 import directions.*
 import lines.*
@@ -6,17 +7,50 @@ import dataBase.*
 
 
 class Tetrimino {
+	var property rotation = 0
 	var property basicTs
 	
-	method rotateRight() {}
+	method rotateCW() {
+		self.rotateCWS()
+		rotationSys.executeRotationTestsCW(self)
+	}
 	
-	method rotateLeft() {
+	method rotateACW() {
+		self.rotateACWS()
+		rotationSys.executeRotationTestsACW(self)
+	}
+	
+	
+	method rotateCWS() {
 		basicTs.forEach({ basicT =>
 			basicT.position(game.at
-				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
-				 self.cubeMain().height() - self.cubeMain().width() + basicT.width())
-			)		
+			   (self.cubeMain().width() - self.cubeMain().height() + basicT.height(),
+				self.cubeMain().height() + self.cubeMain().width() - basicT.width())
+			)
 		})
+		self.increaseRotation()
+	}
+	
+	method rotateACWS() {
+		basicTs.forEach({ basicT =>
+			basicT.position(game.at
+				(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),
+				self.cubeMain().height() - self.cubeMain().width() + basicT.width())
+			)
+		})
+		self.decreaseRotation()
+	}
+	
+	method increaseRotation() {
+		console.println(rotation)
+		rotation = (rotation + 1)%(4)
+		console.println("Done: new rotation is " + rotation.toString())
+	}
+	
+	method decreaseRotation() {
+		console.println(rotation)
+		rotation = (rotation + 3)%(4)
+		console.println("Done: new rotation is " + rotation.toString())
 	}
 	
 	method add() {
@@ -40,8 +74,6 @@ class Tetrimino {
 			} else {
 				self.endAutoFall()
 			}
-			//console.println("running?")
-			//console.println("Width: " + width.toString())
 		})
 	}
 	
@@ -65,8 +97,16 @@ class Tetrimino {
 		}
 	}
 	
+	method canBeAt(pos) {
+		return basicTs.all({ b => b.canBeAt(pos.x(), pos.y()) })
+	}
+	
+	method moveTo(pos) {
+		basicTs.forEach({ b => b.moveTo(pos.x(), pos.y()) })
+	}
+	
 	method canMove(dir) {
-		return basicTs.all({ basicT => dir.canMove(basicT) })
+		return basicTs.all({ basicT => dir.canMove(basicT) }) 
 	}
 	
 	method move(dir) {
@@ -84,7 +124,7 @@ class BasicT {
 	const property main
 	const property centerId = null
 	var property position
-	var property moving = true
+	var property moving
 	var property color
 	
 	method image() { 
@@ -111,18 +151,39 @@ class BasicT {
 	method stopMoving() {
 		moving = false
 	}
-}
-
-class GhostT {
-	var property position
-	const property centerId
 	
-	method add() {}
-	method width() { return position.x() }
-	method height() { return position.y() }
-	method move(dir) { dir.move(self) }
-	method stopMoving() {}
+	//(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
+	// self.cubeMain().height() - self.cubeMain().width() + basicT.width())
 	
+	method nextYPos(centerT) {
+		return centerT.height() - centerT.width() + self.height()
+	}
+	
+	method canBeAt(valueX, valueY) {
+		
+		return !self.stillOn(game.at(
+			(position.x() + valueX),
+			(position.y() + valueY)
+		)) || self.nothingOn(game.at(
+			(position.x() + valueX),
+			(position.y() + valueY)))
+	}
+	
+	method nothingOn(pos) {
+		return game.getObjectsIn(pos) == []
+	}
+	
+	method moveTo(valueX, valueY) {
+		position = game.at(
+			(position.x() + valueX),
+			(position.y() + valueY)
+		)
+	}
+	
+	method stillOn(pos) {
+		return game.getObjectsIn(pos) != [] &&
+			  !game.getObjectsIn(pos).head().moving()
+	}
 }
 
 object noPiece {	
@@ -131,4 +192,5 @@ object noPiece {
 	method rotateLeft() {}
 	method rotateRight() {}
 	method add() {}
+	method endAutoFall() {}
 }

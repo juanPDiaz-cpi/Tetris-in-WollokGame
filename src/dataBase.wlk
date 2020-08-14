@@ -3,6 +3,13 @@ import wollok.game.*
 object dataBase {
 	var property objsSaved = []
 	
+	method clearGame() {
+		objsSaved.forEach({ element =>  
+			objsSaved.remove(element)
+			game.removeVisual(element)
+		})
+	}
+	
 	method add(obj) {
 		objsSaved.add(obj)
 	}

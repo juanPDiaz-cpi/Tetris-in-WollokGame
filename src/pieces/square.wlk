@@ -4,6 +4,6 @@ import tetris.*
 
 class Cube inherits Tetrimino {
 	
-	override method rotateLeft() {}
-	override method rotateRight() {}
+	override method rotateCW() {}
+	override method rotateACW() {}
 }

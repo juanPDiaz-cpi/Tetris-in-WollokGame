@@ -17,7 +17,7 @@ object lineChecker {
 	method checkLine(number) {
 		if(self.isFull(number)) {
 			console.println("It should print if the line is full")
-			self.clearLine(number) 								// No está funcionando bien
+			self.clearLine(number)
 			self.addLineCleared(number)
 		}
 	}

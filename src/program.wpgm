@@ -8,6 +8,8 @@ program TetrisGame {
 	game.height(20)
 	game.width(10)
 	
+	game.boardGround("background.png")
+	
 	gameConfig.start()
 	
 	game.start()
