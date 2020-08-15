@@ -60,7 +60,8 @@ object rotationSys {
 				acwRotationTests.map({ rTest => rTest.modified(valueX, valueY) })
 			}
 	}
-	
+		
+	// Math functions to determine the value which modifies the rotation tests in function of the rotation number of the tetrimino. 
 	method cwx(number) { return (2*(number - 3/2).abs()) - 2 }
 	
 	method cwy(number) { return (-1)**number }
@@ -68,6 +69,11 @@ object rotationSys {
 	method acwx(number) { return ((2*(number - 5/2).abs()) - 2).min(1) }
 	
 	method acwy(number) { return (-1)**number }
+	
+	// Math functions that determine the offSet value in function of the rotation number of the tetrimino.
+	method iOffSetX(number) { return (number - 1).abs() - 1 }
+	
+	method iOffSetY(number) { return - (number % 2) + 1 }
 }
 
 class RotationTest {

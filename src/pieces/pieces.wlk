@@ -25,12 +25,12 @@ object pieces {
 			])
 	}
 	
-	method straight() {
+	method i() {
 		return 
 			new Straight(basicTs = [
-				new BasicT(position = game.at(3,18), color = "Red", main = true, moving = true),
+				new BasicT(position = game.at(3,18), color = "Red", main = false, moving = true),
 				new BasicT(position = game.at(4,18), color = "Red", main = false, moving = true),
-				new BasicT(position = game.at(5,18), color = "Red", main = false, moving = true),
+				new BasicT(position = game.at(5,18), color = "Red", main = true, moving = true),
 				new BasicT(position = game.at(6,18), color = "Red", main = false, moving = true)	
 			])
 	}
@@ -76,7 +76,7 @@ object pieces {
 	}
 	
 	method random() {
-		return [self.square(), self.t(), self.l(), self.j(), self.s(), self.z()].anyOne()
+		return [self.square(), self.t(), self.l(), self.j(), self.s(), self.z(), self.i()].anyOne()
 	}
 }
 
