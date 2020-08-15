@@ -69,11 +69,6 @@ object rotationSys {
 	method acwx(number) { return ((2*(number - 5/2).abs()) - 2).min(1) }
 	
 	method acwy(number) { return (-1)**number }
-	
-	// Math functions that determine the offSet value in function of the rotation number of the tetrimino.
-	method iOffSetX(number) { return (number - 1).abs() - 1 }
-	
-	method iOffSetY(number) { return - (number % 2) + 1 }
 }
 
 class RotationTest {
