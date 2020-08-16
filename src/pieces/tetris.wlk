@@ -1,7 +1,6 @@
 import wollok.game.*
 import rotationsys.*
 import gameConfig.*
-import directions.*
 import lines.*
 import dataBase.*
 
@@ -9,6 +8,8 @@ import dataBase.*
 class Tetrimino {
 	var property rotation = 0
 	var property basicTs
+	
+	method position() { return self.cubeMain().position() }
 	
 	method rotateCW() {
 		self.rotateCWS()
@@ -55,7 +56,7 @@ class Tetrimino {
 	
 	method add() {
 		basicTs.forEach({ basicT => basicT.add() })
-		self.autoFall()
+		//self.autoFall()
 	}
 	
 	method wait() {
@@ -68,9 +69,11 @@ class Tetrimino {
 	}
 	
 	method autoFall() {
-		game.onTick(gameConfig.actualTime(), "autoFall", { 
-			if(self.canMove(down)) {
-				self.move(down)
+		game.onTick(gameConfig.actualTime(), "autoFall", {
+			const downPos = self.position().down(1)
+			
+			if(self.canBeAt(downPos)) {
+				self.moveTo(downPos)
 			} else {
 				self.endAutoFall()
 			}
@@ -81,16 +84,18 @@ class Tetrimino {
 		game.removeTickEvent("autoFall")
 		lineChecker.checkLines(self.linesModified())
 		gameConfig.newElement()
-		self.notMoving()
+		self.stopMoving()
 	}
 	
-	method notMoving() {
+	method stopMoving() {
 		basicTs.forEach({ basicT => basicT.stopMoving() })
 	}
 	
 	method goDown() {
-		if(self.canMove(down)) {
-			self.move(down)
+		const downPos = self.position().down(1)
+		
+		if(self.canBeAt(downPos)) {
+			self.moveTo(downPos)
 			self.goDown()
 		} else {
 			self.wait()
@@ -98,21 +103,11 @@ class Tetrimino {
 	}
 	
 	method canBeAt(pos) {
-		return basicTs.all({ b => b.canBeAt(pos.x(), pos.y()) })
+		return basicTs.all({ b => b.canBeAt(pos) })
 	}
 	
 	method moveTo(pos) {
-		basicTs.forEach({ b => b.moveTo(pos.x(), pos.y()) })
-	}
-	
-	method canMove(dir) {
-		return basicTs.all({ basicT => dir.canMove(basicT) }) 
-	}
-	
-	method move(dir) {
-		if(self.canMove(dir)) {
-			basicTs.forEach({ basicT => basicT.move(dir) })
-		}
+		basicTs.forEach({ b => b.moveTo(pos) })
 	}
 
 	method linesModified() {
@@ -122,17 +117,12 @@ class Tetrimino {
 
 class BasicT {
 	const property main
-	const property centerId = null
 	var property position
 	var property moving
 	var property color
 	
 	method image() { 
 		return "basicT" + color + ".png"
-	}
-	
-	method move(dir) {
-		dir.move(self)
 	}
 	
 	method add() {
@@ -159,24 +149,27 @@ class BasicT {
 		return centerT.height() - centerT.width() + self.height()
 	}
 	
-	method canBeAt(valueX, valueY) {
+	method canBeAt(pos) {
 		
 		return !self.stillOn(game.at(
-			(position.x() + valueX),
-			(position.y() + valueY)
+			(position.x() + pos.x()),
+			(position.y() + pos.y())
 		)) || self.nothingOn(game.at(
-			(position.x() + valueX),
-			(position.y() + valueY)))
+			(position.x() + pos.x()),
+			(position.y() + pos.y())))
 	}
 	
 	method nothingOn(pos) {
 		return game.getObjectsIn(pos) == []
 	}
 	
-	method moveTo(valueX, valueY) {
+	method moveTo(pos) {
+		const diffX = position.x() - pos.x()
+		const diffY = position.y() - pos.y()
+		
 		position = game.at(
-			(position.x() + valueX),
-			(position.y() + valueY)
+			pos.x() - diffX,
+			pos.y() - diffY
 		)
 	}
 	
@@ -187,7 +180,6 @@ class BasicT {
 }
 
 object noPiece {	
-	method move(dir) {}
 	method goDown() {}
 	method rotateLeft() {}
 	method rotateRight() {}

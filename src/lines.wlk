@@ -1,6 +1,5 @@
 import wollok.game.*
 import gameConfig.*
-import directions.*
 import dataBase.*
 
 object lineChecker {
@@ -38,7 +37,7 @@ object lineChecker {
 		dataBase.objsSaved().forEach({ element =>
 			if(element.height() > num) {
 				console.println("goDownEveryT")
-				element.move(down)
+				element.moveTo(element.position().down(1))
 			}
 		})	
 	}

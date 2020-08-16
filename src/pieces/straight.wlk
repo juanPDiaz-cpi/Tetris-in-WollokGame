@@ -1,5 +1,4 @@
 import wollok.game.*
-import directions.*
 import tetris.*
 import gameConfig.*
 

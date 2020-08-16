@@ -1,7 +1,6 @@
 import pieces.pieces.*
 import wollok.game.*
 import pieces.tetris.*
-import directions.*
 import lines.*
 import pieces.straight.*
 import pieces.square.*
@@ -34,15 +33,19 @@ object gameConfig {
 	}
 	
 	method keys() {
-		keyboard.left().onPressDo({ tetrinomiun.move(left) })
-		keyboard.right().onPressDo({ tetrinomiun.move(right) })
-		keyboard.down().onPressDo({ tetrinomiun.move(down) })
+		keyboard.left().onPressDo({ tetrinomiun.moveTo(tetrinomiun.position().left(1)) })
+		keyboard.right().onPressDo({ tetrinomiun.moveTo(tetrinomiun.position().right(1)) })
+		keyboard.down().onPressDo({ tetrinomiun.moveTo(tetrinomiun.position().down(1)) })
 		keyboard.space().onPressDo({ tetrinomiun.goDown() })
 		keyboard.z().onPressDo({ tetrinomiun.rotateACW() })
 		keyboard.x().onPressDo({ tetrinomiun.rotateCW() })
 		keyboard.r().onPressDo({ self.restartGame() })
 		keyboard.backspace().onPressDo({ game.stop() })
-		keyboard.n().onPressDo({ console.println(tetrinomiun.rotation().toString()) })
+		keyboard.l().onPressDo({ tetrinomiun.basicTs().forEach({
+			b => console.println(b.position().toString())
+		})
+		console.println("---------")
+		 })
 	}
 	
 	method setSettings() {
