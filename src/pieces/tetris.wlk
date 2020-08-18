@@ -92,7 +92,6 @@ class Tetrimino {
 	}
 	
 	method goDown() {	
-		
 		if(self.canBeAt(self.position().down(1))) {
 			self.moveTo(self.position().down(1))
 			self.goDown()
@@ -108,15 +107,24 @@ class Tetrimino {
 		return basicTs.all({ b => b.canChangePos(x, y) })
 	}
 	
+	method canChange(pos) {
+		return basicTs.all({ b => b.canChangePos(pos.x(), pos.y()) })
+	}
+	
+	method changePosition(pos) {
+		basicTs.forEach({ b =>
+			b.changePosition(pos.x(), pos.y())
+		})
+	}
+	
 	method moveTo(pos) {
 		const valueX = pos.x() - self.cubeMain().width()
 		const valueY = pos.y() - self.cubeMain().height()
 		
-		basicTs.forEach({ b => b.moveTo(valueX, valueY) })
+		basicTs.forEach({ b => b.changePosition(valueX, valueY) })
 	}
 	
 	method moveIfPossible(pos) {
-		
 		if(self.canBeAt(pos)) {
 			self.moveTo(pos)
 		}
@@ -168,7 +176,7 @@ class BasicT {
 			(position.y() + y)))
 	}
 	
-	method moveTo(x, y) {
+	method changePosition(x, y) {
 		position = game.at(
 			position.x() + x,
 			position.y() + y

@@ -39,8 +39,7 @@ object rotationSys {
 	
 	method tryPositions(tetrimino, positions) {		
 		try {
-			tetrimino.moveTo(positions.find({ pos => tetrimino.canBeAt(pos) }))
-			console.println("I'm here")
+			tetrimino.changePosition(positions.find({ pos => tetrimino.canChange(pos) }))
     	}
     	catch e : ElementNotFoundException {
     		if(rotationCW) {
@@ -48,7 +47,6 @@ object rotationSys {
 			} else {
 				tetrimino.rotateCWS()
 			}
-			console.println("I'm here instead")
 		}
 	}
 	
