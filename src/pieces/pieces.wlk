@@ -76,7 +76,7 @@ object pieces {
 	}
 	
 	method random() {
-		return [self.square(), self.t(), self.l(), self.j(), self.s(), self.z(), self.i()].anyOne() //self.i()
+		return [self.square(), self.t(), self.l(), self.j(), self.s(), self.z()].anyOne() //self.i()
 	}
 }
 

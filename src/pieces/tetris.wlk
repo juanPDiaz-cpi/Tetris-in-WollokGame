@@ -56,7 +56,7 @@ class Tetrimino {
 	
 	method add() {
 		basicTs.forEach({ basicT => basicT.add() })
-		//self.autoFall()
+		self.tickFall()
 	}
 	
 	method wait() {
@@ -68,16 +68,16 @@ class Tetrimino {
 		return basicTs.find({ basicT => basicT.main() })
 	}
 	
+	method tickFall() {		
+		game.onTick(gameConfig.actualTime(), "autoFall", { self.autoFall() })
+	}
+	
 	method autoFall() {
-		game.onTick(gameConfig.actualTime(), "autoFall", {
-			const downPos = self.position().down(1)
-			
-			if(self.canBeAt(downPos)) {
-				self.moveTo(downPos)
-			} else {
-				self.endAutoFall()
-			}
-		})
+		if(self.canBeAt(self.position().down(1))) {
+			self.moveTo(self.position().down(1))
+		} else {
+			self.endAutoFall()
+		}
 	}
 	
 	method endAutoFall() {
@@ -91,11 +91,10 @@ class Tetrimino {
 		basicTs.forEach({ basicT => basicT.stopMoving() })
 	}
 	
-	method goDown() {
-		const downPos = self.position().down(1)
+	method goDown() {	
 		
-		if(self.canBeAt(downPos)) {
-			self.moveTo(downPos)
+		if(self.canBeAt(self.position().down(1))) {
+			self.moveTo(self.position().down(1))
 			self.goDown()
 		} else {
 			self.wait()
@@ -103,11 +102,25 @@ class Tetrimino {
 	}
 	
 	method canBeAt(pos) {
-		return basicTs.all({ b => b.canBeAt(pos) })
+
+		const x = pos.x() - self.cubeMain().width()
+		const y = pos.y() - self.cubeMain().height()
+				
+		return basicTs.all({ b => b.canChangePos(x, y) })
 	}
 	
 	method moveTo(pos) {
-		basicTs.forEach({ b => b.moveTo(pos) })
+		const valueX = pos.x() - self.cubeMain().width()
+		const valueY = pos.y() - self.cubeMain().height()
+		
+		basicTs.forEach({ b => b.moveTo(valueX, valueY) })
+	}
+	
+	method moveIfPossible(pos) {
+		
+		if(self.canBeAt(pos)) {
+			self.moveTo(pos)
+		}
 	}
 
 	method linesModified() {
@@ -142,40 +155,34 @@ class BasicT {
 		moving = false
 	}
 	
-	//(self.cubeMain().height() + self.cubeMain().width() - basicT.height(),	  // Implementación del algoritmo de rotación.
-	// self.cubeMain().height() - self.cubeMain().width() + basicT.width())
-	
 	method nextYPos(centerT) {
 		return centerT.height() - centerT.width() + self.height()
 	}
 	
-	method canBeAt(pos) {
+	method canChangePos(x, y) {
 		
-		return !self.stillOn(game.at(
-			(position.x() + pos.x()),
-			(position.y() + pos.y())
-		)) || self.nothingOn(game.at(
-			(position.x() + pos.x()),
-			(position.y() + pos.y())))
+		return self.thereIsSomethingMovingOn(game.at(
+			(position.x() + x),
+			(position.y() + y)
+		)) || !self.thereIsSomethingOn(game.at(
+			(position.x() + x),
+			(position.y() + y)))
 	}
 	
-	method nothingOn(pos) {
-		return game.getObjectsIn(pos) == []
-	}
-	
-	method moveTo(pos) {
-		const diffX = position.x() - pos.x()
-		const diffY = position.y() - pos.y()
-		
+	method moveTo(x, y) {
 		position = game.at(
-			pos.x() - diffX,
-			pos.y() - diffY
+			position.x() + x,
+			position.y() + y
 		)
 	}
 	
-	method stillOn(pos) {
-		return game.getObjectsIn(pos) != [] &&
-			  !game.getObjectsIn(pos).head().moving()
+	method thereIsSomethingOn(pos) {
+		return game.getObjectsIn(pos) != []
+	}
+	
+	method thereIsSomethingMovingOn(pos) {
+		return self.thereIsSomethingOn(pos) &&
+			   game.getObjectsIn(pos).head().moving()			// Re-do this
 	}
 }
 
