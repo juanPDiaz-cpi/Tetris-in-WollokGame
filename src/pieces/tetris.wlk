@@ -102,7 +102,6 @@ class Tetrimino {
 	}
 	
 	method canBeAt(pos) {
-
 		const x = pos.x() - self.cubeMain().width()
 		const y = pos.y() - self.cubeMain().height()
 				

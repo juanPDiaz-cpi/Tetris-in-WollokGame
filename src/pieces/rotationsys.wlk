@@ -40,7 +40,7 @@ object rotationSys {
 	method tryPositions(tetrimino, positions) {		
 		try {
 			tetrimino.moveTo(positions.find({ pos => tetrimino.canBeAt(pos) }))
-			//console.println("I'm here")
+			console.println("I'm here")
     	}
     	catch e : ElementNotFoundException {
     		if(rotationCW) {
@@ -48,7 +48,7 @@ object rotationSys {
 			} else {
 				tetrimino.rotateCWS()
 			}
-			//console.println("I'm here instead")
+			console.println("I'm here instead")
 		}
 	}
 	
@@ -62,10 +62,12 @@ object rotationSys {
 	}
 		
 	// Math functions to determine the value which modifies the rotation tests in function of the rotation number of the tetrimino. 
+	// Clockwise functions.
 	method cwx(number) { return (2*(number - 3/2).abs()) - 2 }
 	
 	method cwy(number) { return (-1)**number }
 	
+	// Counter-clockwise functions.
 	method acwx(number) { return ((2*(number - 5/2).abs()) - 2).min(1) }
 	
 	method acwy(number) { return (-1)**number }
@@ -75,12 +77,7 @@ class RotationTest {
 	const property position
 	
 	method modified(valueX, valueY) {
-		//console.println("x = " + valueX.toString() + " and y = " + valueY.toString())
-		/*console.println(
-			"x = " + position.x().toString() + //(position.x() * valueX).toString() + 
-			" and y = " + position.y().toString() //(position.y() * valueY).toString()
-		)*/
-		
+				
 		return game.at(
 			position.x() * valueX,
 			position.y() * valueY
