@@ -1,17 +1,20 @@
 import wollok.game.*
 import tetris.*
 import gameConfig.*
+import rotationsys.*
 
 class Straight inherits Tetrimino {
 	
 	override method rotateCW() {
 		self.rotateCWS()
 		self.adjust(self.cwOffSetX(rotation), self.cwOffSetY(rotation))
+		rotationSys.executeRotationTestsCW(self)
 	}
 	
 	override method rotateACW() {
 		self.rotateACWS()
 		self.adjust(self.acwOffSetX(rotation), self.acwOffSetY(rotation))
+		rotationSys.executeRotationTestsACW(self)
 	}
 	
 	method adjust(valueX, valueY) {

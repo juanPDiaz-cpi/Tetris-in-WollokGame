@@ -7,23 +7,23 @@ import pieces.square.*
 import dataBase.*
 
 object gameConfig {
-	const property widthMin = -1
-	const property widthMax = 10
-	const property heightMin = -1
-	const property heightMax = 20
+	const property widthMin = 9
+	const property widthMax = 20
+	const property heightMin = 1
+	const property heightMax = 22
 	var property actualTime = 250
 	
-	var property tetrinomiun = pieces.random()
+	var property tetrinomiun = pieces.randomTetrimino()
 
 	method setBoard() {
-		(widthMin..widthMax).forEach({ n => game.addVisual(self.basicT(n, heightMin)) })
-		(widthMin..widthMax).forEach({ n => game.addVisual(self.basicT(n, heightMax)) })
-		((heightMin-1)..(heightMax-1)).forEach({ n => game.addVisual(self.basicT(widthMin, n)) })
-		((heightMin-1)..(heightMax-1)).forEach({ n => game.addVisual(self.basicT(widthMax, n)) })
+		(widthMin..widthMax).forEach({ n => game.addVisual(self.addBorderAt(n, heightMin)) })
+		(widthMin..widthMax).forEach({ n => game.addVisual(self.addBorderAt(n, heightMax)) })
+		((heightMin)..(heightMax)).forEach({ n => game.addVisual(self.addBorderAt(widthMin, n)) })
+		((heightMin)..(heightMax)).forEach({ n => game.addVisual(self.addBorderAt(widthMax, n)) })
 	}
 
-	method basicT(x, y) {
-		return new BasicT(main = false, position = game.at(x,y), color = "Blue", moving = false)
+	method addBorderAt(x, y) {
+		return new BasicT(main = false, position = game.at(x,y), color = "Transparent", moving = false)
 	}
 	
 	method start() {
@@ -48,7 +48,7 @@ object gameConfig {
 	}
 	
 	method newElement() {
-		tetrinomiun = pieces.random()
+		tetrinomiun = pieces.randomTetrimino()
 		self.setSettings()
 	}
 	

@@ -3,8 +3,8 @@ import gameConfig.*
 import dataBase.*
 
 object lineChecker {
-	const property lines = (0..19)
-	const property widths = (0..9)
+	const property lines = ((gameConfig.heightMin() + 1)..(gameConfig.heightMax() - 1))
+	const property widths = ((gameConfig.widthMin() + 1)..(gameConfig.widthMax() - 1))
 	var property linesCleared = []
 	
 	method checkLines(linesToCheck) {

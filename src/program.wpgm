@@ -5,8 +5,8 @@ import gameConfig.*
 program TetrisGame {
 	
 	game.cellSize(25)
-	game.height(20)
-	game.width(10)
+	game.height(24)
+	game.width(30)
 	
 	game.boardGround("background.png")
 	
