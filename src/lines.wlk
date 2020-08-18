@@ -15,7 +15,7 @@ object lineChecker {
 	
 	method checkLine(number) {
 		if(self.isFull(number)) {
-			console.println("It should print if the line is full")
+			console.println("It should print this if the line is full")
 			self.clearLine(number)
 			self.addLineCleared(number)
 		}
@@ -27,16 +27,13 @@ object lineChecker {
 	
 	method goDownAbove(linesToClear) {
 		linesCleared.forEach({ line =>
-			console.println(line.toString() + " hi")
 			self.goDownEveryT(line)
-			console.println("goDownAbove")
 		})
 	}
 	
 	method goDownEveryT(num) {
 		dataBase.objsSaved().forEach({ element =>
 			if(element.height() > num) {
-				console.println("goDownEveryT")
 				element.moveTo(element.position().down(1))
 			}
 		})	

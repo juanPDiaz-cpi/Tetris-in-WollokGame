@@ -176,6 +176,10 @@ class BasicT {
 		)
 	}
 	
+	method moveTo(pos) {
+		position = pos
+	}
+	
 	method thereIsSomethingOn(pos) {
 		return game.getObjectsIn(pos) != []
 	}
