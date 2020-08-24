@@ -1,3 +1,4 @@
+import board.*
 import pieces.pieces.*
 import wollok.game.*
 import pieces.tetris.*
@@ -12,20 +13,12 @@ object gameConfig {
 	const property heightMin = 1
 	const property heightMax = 22
 	var property actualTime = 250
-	
 	var property tetrinomiun = pieces.randomTetrimino()
 
 	method setBoard() {
-		(widthMin..widthMax).forEach({ n => game.addVisual(self.addBorderAt(n, heightMin)) })
-		(widthMin..widthMax).forEach({ n => game.addVisual(self.addBorderAt(n, heightMax)) })
-		((heightMin)..(heightMax)).forEach({ n => game.addVisual(self.addBorderAt(widthMin, n)) })
-		((heightMin)..(heightMax)).forEach({ n => game.addVisual(self.addBorderAt(widthMax, n)) })
+		board.addVisuals(widthMin, widthMax, heightMin, heightMax)
 	}
-
-	method addBorderAt(x, y) {
-		return new BasicT(main = false, position = game.at(x,y), color = "Transparent", moving = false)
-	}
-	
+		
 	method start() {
 		self.keys()
 		self.setBoard()

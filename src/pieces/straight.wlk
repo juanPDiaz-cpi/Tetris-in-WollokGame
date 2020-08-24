@@ -17,16 +17,13 @@ class Straight inherits Tetrimino {
 		rotationSys.executeRotationTestsACW(self)
 	}
 	
-	method adjust(valueX, valueY) {
-		console.println("x = " + valueX)
-		console.println("y = " + valueY)
-		
+	method adjust(valueX, valueY) {		
 		self.moveTo(
 			game.at(valueX, valueY)
 		)
 	}
 		
-	// Math functions that determine the offSet value in function of the rotation number of the tetrimino.
+	// Math functions that determine the offSet value in function of the rotation number of self.
 	// Clockwise
 	method cwOffSetX(number) { return (number - 2).abs() - 1 }
 	
@@ -36,6 +33,28 @@ class Straight inherits Tetrimino {
 	method acwOffSetX(number) { return - (number - 1).abs() + 1 }
 	
 	method acwOffSetY(number) { return (number - 2).abs() - 1 }
+	
+	
+	// Math functions that determine the x position in function of the rotation number of self.
+	method f(x, y) {
+		return (self.g(y) - self.t(y)*self.h(x))*self.s(x)
+	}
+	
+	method g(x) {
+		return ((5*x/2) - (x**3)/2)
+	}
+	
+	method t(x) {
+		return x*(3 - x**2)/2
+	}
+	
+	method h(x) {
+		return 1 - (x%2)
+	}
+	
+	method s(x) {
+		return (3 - 2*x).abs() - 2
+	}
 }
 
 
